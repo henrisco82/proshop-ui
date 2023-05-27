@@ -8,6 +8,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Product from './pages/Product';
 import Cart from './pages/Cart';
@@ -15,6 +16,8 @@ import Shipping from './pages/Shipping';
 import Payment from './pages/Payment';
 import PlaceOrder from './pages/PlaceOrder';
 import Order from './pages/Order';
+import UserList from './pages/UserList';
+import UserEdit from './pages/UserEdit';
 
 function App() {
   return (
@@ -27,12 +30,15 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path='/register' element={<Register />} />
+              <Route path='/profile' element={<Profile />} />
               <Route path='/product/:productId' element={<Product />} />
               <Route path="/cart/:id?" element={<Cart />} />
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/placeorder" element={<PlaceOrder />} />
               <Route path="/order/:orderId" element={<Order />} />
+              <Route path='/admin/userlist' element={<UserList />} />
+              <Route path='/admin/userlist/:userId/edit' element={<UserEdit />} />
             </Routes>
           </Container>
         </main>

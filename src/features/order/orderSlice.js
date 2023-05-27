@@ -5,6 +5,7 @@ import { extractErrorMessage } from '../../utils'
 const initialState = {
     order: {},
     orders: [],
+    myOrders: [],
     isLoading: false,
     error: '',
 }
@@ -65,6 +66,21 @@ export const createOrder = createAsyncThunk(
     }
 )
 
+export const payOrder = createAsyncThunk(
+    'order/payOrder',
+    async (orderData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().user.user.token
+            const response = await orderService.payOrder(orderData, token)
+            return response
+        }
+        catch (error) {
+            console.log(error)
+            return thunkAPI.rejectWithValue(extractErrorMessage(error))
+        }
+    }
+)
+
 const orderSlice = createSlice({
     name: 'order',
     initialState,
@@ -92,6 +108,17 @@ const orderSlice = createSlice({
                 state.isLoading = false
                 state.error = 'Failed to get order details'
             })
+            .addCase(getMyOrders.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getMyOrders.fulfilled, (state, action) => {
+                state.myOrders = action.payload
+                state.isLoading = false
+            })
+            .addCase(getMyOrders.rejected, (state) => {
+                state.isLoading = false
+                state.error = 'Failed to get my orders'
+            })
             .addCase(createOrder.pending, (state) => {
                 state.isLoading = true
             })
@@ -102,6 +129,17 @@ const orderSlice = createSlice({
             .addCase(createOrder.rejected, (state) => {
                 state.isLoading = false
                 state.error = 'Failed to create order'
+            })
+            .addCase(payOrder.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(payOrder.fulfilled, (state, action) => {
+                state.order = action.payload
+                state.isLoading = false
+            })
+            .addCase(payOrder.rejected, (state) => {
+                state.isLoading = false
+                state.error = 'Failed to pay order'
             })
     }
 })

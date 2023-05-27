@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../features/order/orderSlice'
+import { clearCartItems } from '../features/cart/cartSlice'
 
 const PlaceOrder = () => {
   const dispatch = useDispatch()
@@ -49,6 +50,7 @@ const PlaceOrder = () => {
     ).unwrap()
      .then((order) => {
       toast.success(`Order created with id: ${order._id}`)
+      dispatch(clearCartItems())
       navigate(`/order/${order._id}`)
     }).catch(toast.error)
   }

@@ -13,8 +13,88 @@ const user = JSON.parse(localStorage.getItem('user'))
 // in our component and we will have the error message there
 const initialState = {
   user: user ? user : null,
+  users: [],
   isLoading: false,
+  error: '',
 }
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.user.token
+      const response = await userService.update(user, token)
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error))
+    }
+  }
+)
+
+export const getUserDetails = createAsyncThunk(
+  'user/getUserDetails',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.user.token
+      const response = await userService.getById(id, token)
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error))
+    }
+  }
+)
+
+export const getUserProfile = createAsyncThunk(
+  'user/getUserProfile',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.user.token
+      const response = await userService.getProfile(token)
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error))
+    }
+  } 
+)
+
+export const updateUserProfile = createAsyncThunk(
+  'user/updateUserProfile',
+  async (user, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.user.token
+      const response = await userService.updateProfile(user, token)
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error))
+    }
+  }
+)
+
+export const getAllUsers = createAsyncThunk(
+  'user/getAllUsers',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.user.token
+      const response = await userService.getAll(token)
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error))
+    }
+  }
+)
+
+export const deleteUser = createAsyncThunk(
+  'user/deleteUser',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.user.token
+      const response = await userService.deleteById(id, token)
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error))
+    }
+  }
+)
 
 // Register new user
 export const register = createAsyncThunk(
@@ -60,6 +140,17 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getAllUsers.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.users = action.payload
+        state.isLoading = false
+      })
+      .addCase(getAllUsers.rejected, (state) => {
+        state.isLoading = false
+        state.error = 'Error getting users'
+      })
       .addCase(register.pending, (state) => {
         state.isLoading = true
       })
@@ -69,6 +160,7 @@ export const userSlice = createSlice({
       })
       .addCase(register.rejected, (state) => {
         state.isLoading = false
+        state.error = 'Error registering user'
       })
       .addCase(login.pending, (state) => {
         state.isLoading = false
@@ -79,6 +171,40 @@ export const userSlice = createSlice({
       })
       .addCase(login.rejected, (state) => {
         state.isLoading = false
+        state.error = 'Error logging in user'
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.isLoading = false
+      })
+      .addCase(updateUser.rejected, (state) => {
+        state.isLoading = false
+        state.error = 'Error updating user'
+      })
+      .addCase(getUserDetails.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getUserDetails.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.isLoading = false
+      })
+      .addCase(getUserDetails.rejected, (state) => {
+        state.isLoading = false
+        state.error = 'Error getting user details'
+      })
+      .addCase(getUserProfile.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getUserProfile.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.isLoading = false
+      })
+      .addCase(getUserProfile.rejected, (state) => {
+        state.isLoading = false
+        state.error = 'Error getting user profile'
       })
   },
 })
