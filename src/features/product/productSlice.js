@@ -4,6 +4,7 @@ import { extractErrorMessage } from '../../utils'
 
 const initialState = {
     products: [],
+    productTopRated: [],
     product: {},
     isLoading: false,
 }
@@ -105,7 +106,7 @@ const productSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(getTopProducts.fulfilled, (state, action) => {
-                state.products = action.payload
+                state.productTopRated = action.payload
                 state.isLoading = false
             })
             .addCase(getAllProducts.pending, (state) => {

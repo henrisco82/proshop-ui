@@ -5,6 +5,7 @@ import { getAllProducts } from '../features/product/productSlice'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Product from '../components/Product'
+import ProductCarousel from '../components/ProductCarousel'
 
 function Home() {
   const dispatch = useDispatch()
@@ -15,6 +16,7 @@ function Home() {
   }, [dispatch])
   return (
     <>
+      <ProductCarousel />
       <h1>Latest Products</h1>
       {isLoading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :
       <>
