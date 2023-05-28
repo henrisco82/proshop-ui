@@ -150,7 +150,7 @@ const Order = () => {
                     </ListGroup.Item>
                     {!order.isPaid && (
                         <ListGroup.Item>
-                        <PayPalScriptProvider options={{ "client-id": "AUic-na8YIZFCnbOo60fs-F4iUR8ONRWUWaQDbGPjYCeHQP6CBobI-62dK2apmsmBfWjipz1UL3uV2oc" }}>
+                        <PayPalScriptProvider options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID }}>
                             <PayPalButtons
                                 createOrder={(data, actions) => {
                                     return actions.order.create({

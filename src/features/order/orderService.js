@@ -52,12 +52,18 @@ export const payOrder = async (orderData, token) => {
     return response.data
 }
 
+export const getClientId = async () => {
+    const response = await axios.get(process.env.REACT_APP_BASE_URL + '/api/config/paypal')
+    return response.data
+}
+
 const orderService = {
     getAll,
     getById,
     create,
     getMyOrders,
     payOrder,
+    getClientId,
 }
 
 export default orderService
