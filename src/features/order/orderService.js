@@ -52,6 +52,16 @@ export const payOrder = async (orderData, token) => {
     return response.data
 }
 
+export const deliverOrder = async (orderId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const response = await axios.put(API_URL + orderId + '/deliver', {}, config)
+    return response.data
+}
+
 export const getClientId = async () => {
     const response = await axios.get(process.env.REACT_APP_BASE_URL + '/api/config/paypal')
     return response.data
@@ -63,6 +73,7 @@ const orderService = {
     create,
     getMyOrders,
     payOrder,
+    deliverOrder,
     getClientId,
 }
 

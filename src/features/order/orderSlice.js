@@ -81,6 +81,20 @@ export const payOrder = createAsyncThunk(
     }
 )
 
+export const deliverOrder = createAsyncThunk(
+    'order/deliverOrder',
+    async (orderId, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().user.user.token
+            const response = await orderService.deliverOrder(orderId, token)
+            return response
+        }
+        catch (error) {
+            return thunkAPI.rejectWithValue(extractErrorMessage(error))
+        }
+    }
+)
+
 const orderSlice = createSlice({
     name: 'order',
     initialState,
@@ -141,6 +155,18 @@ const orderSlice = createSlice({
                 state.isLoading = false
                 state.error = 'Failed to pay order'
             })
+            .addCase(deliverOrder.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(deliverOrder.fulfilled, (state, action) => {
+                state.order = action.payload
+                state.isLoading = false
+            })
+            .addCase(deliverOrder.rejected, (state) => {
+                state.isLoading = false
+                state.error = deliverOrder.error.message
+            })
+
     }
 })
 

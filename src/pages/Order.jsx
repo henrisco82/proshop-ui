@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getOrderDetails, payOrder } from '../features/order/orderSlice';
+import { getOrderDetails, payOrder, deliverOrder } from '../features/order/orderSlice';
 
 const Order = () => {
   const { orderId } = useParams();
@@ -19,7 +19,7 @@ const Order = () => {
     if (!user) {
       navigate('/login');
     }
-    if (!order || order._id !== orderId || user._id !== order.user._id) {
+    if (!order || order._id !== orderId ) {
       dispatch(getOrderDetails(orderId));
     }
   }, [dispatch, navigate, orderId, order, user]);
@@ -38,6 +38,10 @@ const Order = () => {
         paymentResult: paymentResult,
     }
     dispatch(payOrder(orderData));
+  }
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(orderId))
   }
 
   return (
@@ -171,6 +175,20 @@ const Order = () => {
                             />
                         </PayPalScriptProvider>
                         </ListGroup.Item>
+                    )}
+                    {user &&
+                    user.isAdmin &&
+                    order.isPaid &&
+                    !order.isDelivered && (
+                    <ListGroup.Item>
+                        <Button
+                            type='button'
+                            className='btn btn-block'
+                            onClick={deliverHandler}
+                            >
+                            Mark As Delivered
+                        </Button>
+                    </ListGroup.Item>
                     )}
                     </ListGroup>
                 </Card>
