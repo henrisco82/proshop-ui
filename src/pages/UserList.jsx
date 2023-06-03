@@ -27,6 +27,8 @@ const UserList = () => {
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure')) {
       dispatch(deleteUser(id)).unwrap().then(() => {
+        toast.success('User deleted successfully')
+        dispatch(getAllUsers())
         navigate('/admin/userlist')
       }).catch((err) => {
         toast.error(err.message)

@@ -18,25 +18,26 @@ const UserEdit = () => {
 
   const dispatch = useDispatch()
 
-  const { user, error, isLoading } = useSelector((state) => state.user)
+  const { userDetails, error, isLoading } = useSelector((state) => state.user)
 
   useEffect(() => {
-      if (!user.name || user._id !== userId) {
+      if (!userDetails.name || userDetails._id !== userId) {
         dispatch(getUserDetails(userId))
-            .unwrap()
-            .then(() => {
-                navigate('/admin/userlist')
-            })
       }else {
-        setName(user.name)
-        setEmail(user.email)
-        setIsAdmin(user.isAdmin)
+        setName(userDetails.name)
+        setEmail(userDetails.email)
+        setIsAdmin(userDetails.isAdmin)
       }
-  }, [dispatch, navigate, userId, user,])
+  }, [dispatch, navigate, userId, userDetails,])
 
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(updateUser({ _id: userId, name, email, isAdmin }))
+      .unwrap()
+      .then((user) => {
+        console.log(user)
+        navigate('/admin/userlist')
+      })
   }
 
   if (error) {

@@ -13,6 +13,7 @@ const user = JSON.parse(localStorage.getItem('user'))
 // in our component and we will have the error message there
 const initialState = {
   user: user ? user : null,
+  userDetails: {},
   users: [],
   isLoading: false,
   error: '',
@@ -177,7 +178,7 @@ export const userSlice = createSlice({
         state.isLoading = true
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload
+        state.userDetails = action.payload
         state.isLoading = false
       })
       .addCase(updateUser.rejected, (state) => {
@@ -188,7 +189,7 @@ export const userSlice = createSlice({
         state.isLoading = true
       })
       .addCase(getUserDetails.fulfilled, (state, action) => {
-        state.user = action.payload
+        state.userDetails = action.payload
         state.isLoading = false
       })
       .addCase(getUserDetails.rejected, (state) => {
@@ -206,6 +207,25 @@ export const userSlice = createSlice({
         state.isLoading = false
         state.error = 'Error getting user profile'
       })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.user = action.payload
+        state.isLoading = false
+      })
+      .addCase(updateUserProfile.rejected, (state) => {
+        state.isLoading = false
+        state.error = 'Error updating user profile'
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.userDetails = action.payload
+        state.isLoading = false
+      })
+
   },
 })
 
