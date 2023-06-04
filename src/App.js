@@ -19,6 +19,7 @@ import Order from './pages/Order';
 import UserList from './pages/UserList';
 import UserEdit from './pages/UserEdit';
 import ProductList from './pages/ProductList';
+import ProductEdit from './pages/ProductEdit';
 import OrderList from './pages/OrderList';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
               <Route path='/admin/userlist' element={<UserList />} />
               <Route path='/admin/userlist/:userId/edit' element={<UserEdit />} />
               <Route path='/admin/productlist' element={<ProductList />} />
+              <Route path='/admin/product/:productId/edit' element={<ProductEdit />} />
               <Route path='/admin/orderlist' element={<OrderList />} />
             </Routes>
           </Container>

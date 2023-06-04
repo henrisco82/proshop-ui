@@ -29,11 +29,20 @@ const ProductList = () => {
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure')) {
        dispatch(deleteProduct(id))
+        .unwrap()
+        .then(() => {
+          dispatch(getAllProducts())
+          navigate('/admin/productlist')
+        })
     }
   }
 
   const createProductHandler = () => {
     dispatch(createProduct())
+      .unwrap()
+      .then((product) => {
+        navigate(`/admin/product/${product._id}/edit`)
+      })
   }
 
   return (

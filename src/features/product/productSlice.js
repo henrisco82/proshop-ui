@@ -49,7 +49,7 @@ export const createProduct = createAsyncThunk(
     'product/createProduct',
     async (productData, thunkAPI) => {
         try {
-            const token = thunkAPI.getState().auth.user.token
+            const token = thunkAPI.getState().user.user.token
             const response = await productService.create(productData, token)
             return response
         } catch (error) {
@@ -62,8 +62,8 @@ export const updateProduct = createAsyncThunk(
     'product/updateProduct',
     async (productData, thunkAPI) => {
         try {
-            const token = thunkAPI.getState().auth.user.token
-            const response = await productService.update(productData.id, productData, token)
+            const token = thunkAPI.getState().user.user.token
+            const response = await productService.update(productData._id, productData, token)
             return response
         } catch (error) {
             return thunkAPI.rejectWithValue(extractErrorMessage(error))
@@ -75,7 +75,7 @@ export const deleteProduct = createAsyncThunk(
     'product/deleteProduct',
     async (id, thunkAPI) => {
         try {
-            const token = thunkAPI.getState().auth.user.token
+            const token = thunkAPI.getState().user.user.token
             const response = await productService.deleteById(id, token)
             return response
         } catch (error) {
@@ -88,7 +88,7 @@ export const createProductReview = createAsyncThunk(
     'product/createProductReview',
     async (reviewData, thunkAPI) => {
         try {
-            const token = thunkAPI.getState().auth.user.token
+            const token = thunkAPI.getState().user.user.token
             const response = await productService.createReview(reviewData.id, reviewData, token)
             return response
         } catch (error) {
